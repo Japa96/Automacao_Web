@@ -62,6 +62,11 @@ describe('Settings Web - User', () => {
             .type('123')
             .should('have.value', '123')
 
+        cy.get('#keyWord')
+            .should('be.visible')
+            .type('PALAVRA_CHAVE')
+            .should('have.value', 'PALAVRA_CHAVE')
+
         for(let z = 1; z <= 3; z++) {
             cy.get('section.ng-scope > .container > :nth-child(' + z + ') > .k-checkbox-label')
                 .click()
@@ -91,7 +96,7 @@ describe('Settings Web - User', () => {
         cy.get('.active > .ng-scope > :nth-child(1) > :nth-child(1) > .container > :nth-child(1) > .k-checkbox-label')
             .click()
 
-        cy.get('[style="margin-left:40px"] > .k-checkbox-label')
+        cy.get(':nth-child(1) > .container > [style="margin-left:40px"] > .k-checkbox-label')
             .click()
         
         cy.get('.active > .ng-scope > :nth-child(1) > :nth-child(1) > .container > :nth-child(3) > .k-checkbox-label')
