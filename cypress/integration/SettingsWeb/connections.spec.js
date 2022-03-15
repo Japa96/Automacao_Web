@@ -366,11 +366,103 @@ describe('Settings Web - Connections', () => {
             .click()
     })
 
-    it.only('Output Connection', () => {
+    it('Output Connection', () => {
         cy.xpath('/html/body/ui-view/layout/sidebar/aside/nav[1]/div/ul/li[1]/div/div/span')
             .click()
 
         cy.get('[title="Saída"]')
             .click()
+            .should('have.text', 'Saída')
+
+        cy.get('.titlebar__main-title')
+            .should('be.visible')
+            .and('have.text', 'Conexão de Saída')
+
+        cy.get('.ndd-kendo-grid-header__actions > :nth-child(1)')
+            .should('be.visible')
+            .and('have.text', '  Novo ')
+            .click()
+
+        cy.get('.titlebar__main-title')
+            .should('be.visible')
+            .and('have.text', 'Criar Conexão de Saída')
+
+        cy.get('.active > section.ng-scope > :nth-child(1) > label')
+            .should('have.text', 'Nome:')
+
+        cy.get('.active > section.ng-scope > :nth-child(1) > .ng-isolate-scope > .validateLabel')
+            .should('be.visible')
+            
+        cy.get('#name')
+            .type('SEFAZ Goias Homologação')
+
+        cy.get('.active > section.ng-scope > :nth-child(1) > .ng-isolate-scope > .validateLabel')
+            .should('not.be.visible')
+
+        cy.get('.n-editor-group-label > :nth-child(1) > .ng-pristine')
+            .should('be.checked')
+        
+        cy.get('.n-editor-group-label > :nth-child(2) > .ng-pristine')
+            .should('not.be.checked')
+            .click()
+            .and('be.checked')
+        
+        cy.get('.n-editor-group-label > :nth-child(1) > .ng-pristine')
+            .should('not.be.checked')
+
+        cy.get('.active > section.ng-scope > :nth-child(3) > label')
+            .should('have.text', 'Estado:')
+
+        if(cy.get('.event__panel__input').should('not.be.selected')){
+            cy.get('.active > section.ng-scope > :nth-child(3) > .ng-isolate-scope > .validateLabel').should('be.visible')
+        }
+
+        cy.get('.event__panel__input')
+            .select('Goiás')
+            .should('have.value', 'number:52')
+        
+        if(cy.get('.event__panel__input').should('have.value', 'number:52')){
+            cy.get('.active > section.ng-scope > :nth-child(3) > .ng-isolate-scope > .validateLabel').should('not.be.visible')
+        }
+
+        for(let i = 1; i <= 5; i++){
+            cy.get(':nth-child(' + i + ') > .k-checkbox-label')
+                .click()
+
+                if(i == 5){
+                    cy.xpath('//*[@id="timeLimitCanc"]')
+                        .should('have.value', '1440')
+                        .clear()
+
+                        cy.get('.container > .ng-isolate-scope > .validateLabel')
+                            .should('be.visible')
+
+                        cy.xpath('//*[@id="timeLimitCanc"]')
+                            .should('be.empty')
+                            .type('1441')
+                            .should('have.value', '1441')
+
+                        cy.get('.container > .ng-isolate-scope > .validateLabel')
+                            .should('not.be.visible')
+                }
+
+            if(i == 5){
+                for(let j = 1; j <= 5; j++){
+                    cy.get(':nth-child(' + j + ') > .k-checkbox-label')
+                        .click()
+
+                    if(i == 5){
+                        cy.xpath('//*[@id="timeLimitCanc"]')
+                            .should('have.value', '1441')
+                    }
+
+                }
+            }
+
+        }
+
+        cy.xpath('//*[@id="timeLimitCanc"]')
+            .should('be.disabled')
+            .and('have.value', '1441')
     })
 })
