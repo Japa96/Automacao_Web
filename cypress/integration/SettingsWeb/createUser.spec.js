@@ -24,21 +24,6 @@ describe('Settings Web - User', () => {
         
     }
 
-    /*it('Login', () => {
-        cy.get(':nth-child(1) > .login__input')
-            .type('ndd')
-            .should('have.value', 'ndd')
-        
-        cy.get(':nth-child(2) > .login__input')
-            .should('be.visible')
-            .type('ndd')
-
-        cy.get('.btn')
-            .click()
-
-        cy.get('.navbar__brand-text > span', {timeout: 30000})
-            .should('be.visible')
-    })*/
 
     it('Create user', () =>{
         cy.get('.titlebar__main-title')
@@ -83,10 +68,13 @@ describe('Settings Web - User', () => {
                 .click()
         }
 
-        for(let j = 1; j <= 9; j++) {
+        for(let j = 1; j <= 11; j++) {
             cy.get('.active > .ng-scope > :nth-child(1) > :nth-child(2) > .container > :nth-child(' + j + ') > .k-checkbox-label')
             .click()
         }
+
+        cy.get(':nth-child(2) > .container > [style="margin-left:40px"] > .k-checkbox-label')
+            .click()
 
 
         cy.get('[index="2"] > .nav-link')
