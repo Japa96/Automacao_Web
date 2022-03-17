@@ -734,4 +734,214 @@ describe('Settings Web - Connections', () => {
             .click()
 
     })
+
+    it.only('Cold connection', () => {
+
+        cy.xpath('/html/body/ui-view/layout/sidebar/aside/nav[1]/div/ul/li[1]/div/div/span')
+            .should('have.text', 'Conexões')
+            .and('be.visible')
+            .click()
+        
+        cy.get('[title="Cold"]')
+            .should('be.visible')
+            .and('have.text', 'Cold')
+            .click()
+
+        cy.get('.titlebar__main-title')
+            .should('be.visible')
+            .and('have.text', 'Conexão Cold')
+
+        
+        cy.get('.ndd-kendo-grid-header__actions > :nth-child(1)')
+            .should('be.visible')
+            .and('have.text', '  Novo ')
+            .click()
+
+        cy.get('.titlebar__main-title')
+            .should('be.visible')
+            .and('have.text', 'Criar Conexão Cold')
+
+        cy.get('.active > .nav-link')
+            .should('be.visible')
+            .and('have.text', 'Geral')
+
+        cy.get('.active > section.ng-scope > .form-group.col-md-8 > label')
+            .should('be.visible')
+            .and('have.text', 'Nome: ')
+
+        if(cy.get('#name').should('be.empty')){
+            cy.get('section.ng-scope > .form-group.col-md-8 > .ng-isolate-scope > .validateLabel')
+                .should('be.visible')
+        }
+
+        cy.get('#name')
+            .should('be.empty')
+            .type('AUTOMACAO_COLD')
+            .and('have.value', 'AUTOMACAO_COLD')
+
+
+        if(cy.get('#name').should('have.value', 'AUTOMACAO_COLD')){
+            cy.get('section.ng-scope > .form-group.col-md-8 > .ng-isolate-scope > .validateLabel')
+                .should('not.be.visible')
+        }
+
+        cy.get('.panel-title')
+            .should('be.visible')
+            .and('have.text', 'Dados')
+
+        if(cy.get('.input-group').should('not.have.text')){
+            cy.get('[target="connectionColdIdshowConnection"] > .validateLabel').should('be.visible')
+        }
+
+        cy.get('[ng-click="ctrl.showData = !ctrl.showData"] > .btn > .fa')
+            .should('be.visible')
+            .click()
+
+        if(cy.get(':nth-child(1) > .n-editor-group-label > :nth-child(1) > .ng-pristine').should('be.checked')){
+            cy.get(':nth-child(1) > .n-editor-group-label > :nth-child(2) > .ng-pristine').should('not.be.checked')
+                .click()
+            
+            cy.get(':nth-child(1) > .n-editor-group-label > :nth-child(1) > .ng-pristine')
+                .should('not.be.checked')
+                .click()
+        }
+
+        var dataBaseFields = new Array();
+
+        dataBaseFields[0] = ".cnConnectionStringData > :nth-child(2) > .form-control"
+        dataBaseFields[1] = ":nth-child(3) > .form-control"
+        dataBaseFields[2] = ".cnConnectionStringData > :nth-child(4) > .form-control"
+        dataBaseFields[3] = ":nth-child(5) > .form-control"
+        dataBaseFields[4] = ":nth-child(6) > .form-control"
+
+        var dataBaseAlerts = new Array();
+
+        dataBaseAlerts[0] = ".cnConnectionStringData > :nth-child(2) > .ng-isolate-scope > .validateLabel"
+        dataBaseAlerts[1] = ":nth-child(3) > .ng-isolate-scope > .validateLabel"
+        dataBaseAlerts[2] = ":nth-child(4) > .ng-isolate-scope > .validateLabel"
+        dataBaseAlerts[3] = ":nth-child(5) > .ng-isolate-scope > .validateLabel"
+        dataBaseAlerts[4] = ":nth-child(6) > .form-control"
+
+        var insertDataBaseFields = new Array();
+
+        insertDataBaseFields[0] = "192.168.202.135"
+        insertDataBaseFields[1] = "NDD_COLD_EXPORT_NFCe"
+        insertDataBaseFields[2] = "sa"
+        insertDataBaseFields[3] = "ndd@2104"
+        insertDataBaseFields[4] = "CYPRESS"
+
+        for(let c = 0; c < dataBaseFields.length; c++){
+            cy.get(dataBaseFields[c])
+                .should('be.visible')
+                .and('be.empty')
+
+            cy.get(dataBaseAlerts[c])
+                .should('be.visible')
+
+            cy.get(dataBaseFields[c])
+                .type(insertDataBaseFields[c])
+                .should('have.value', insertDataBaseFields[c])
+        }
+
+        cy.get(':nth-child(6) > .form-control').clear()
+
+        cy.get('[style="margin-top:10px;text-align:right"] > .btn')
+            .should('have.text', ' Criar')
+            .click()
+
+        if(cy.get('#tableName').should('be.empty')){
+            cy.get('.panel-body > div.form-group > .ng-isolate-scope > .validateLabel').should('be.visible')
+        }
+
+        cy.get('#tableName')
+            .type('TBCOLDAUTOMACAO')
+            .should('have.value', 'TBCOLDAUTOMACAO')
+
+        cy.get('.panel-body > div.form-group > .ng-isolate-scope > .validateLabel')
+            .should('not.be.visible')
+
+        cy.get('#validatingButtonId > .btn')
+            .should('have.text', 'Validar Conexão')
+            .and('be.visible')
+            .click()
+
+
+        cy.get('#ngdialog1-aria-labelledby')
+            .should('be.visible')
+            .and('have.text', 'Confirmação')
+
+        cy.get('#ngdialog1-aria-describedby')
+            .should('be.visible')
+            .and('have.text', 'Conexão com o banco válida!')
+
+        cy.get('.footer-actions > .btn')
+            .should('be.visible')
+            .and('have.text', 'ok')
+            .click()
+
+        cy.get('[index="1"] > .nav-link')
+            .should('be.visible')
+            .and('have.text', 'Metadata')
+            .click()
+
+         
+        if(cy.get('#metadataName').should('be.visible').and('be.empty')){
+            cy.get('fieldset > :nth-child(1) > .ng-isolate-scope > .validateLabel').should('be.visible')
+        }
+
+        cy.get('#metadataName')
+            .type('AUTOMACAO_CYPRESS')
+            .and('have.value', 'AUTOMACAO_CYPRESS')
+
+        if(cy.get('.n-editor-group-label > :nth-child(1) > .ng-pristine').should('be.checked')){
+            cy.get(':nth-child(2) > .ng-pristine').should('not.be.checked')
+                .click()
+            
+            cy.get('.n-editor-group-label > :nth-child(1) > .ng-pristine').should('not.be.checked')
+                .click()
+        }
+
+        cy.xpath('//*[@id="metadataGrid"]/div[2]/table/tbody/tr[4]/td[1]/span')
+            .should('be.visible')
+            .and('have.text', 'EMIT_CNPJ')
+            .dblclick()
+
+        
+        cy.get('fieldset > :nth-child(4) > .form-control')
+            .should('be.visible')
+            .and('have.value', 'EMIT_CNPJ')
+
+        cy.get('.dialog-content')
+            .scrollTo('bottom', {ensureScrollable: false})
+
+        cy.get('[ng-hide="isEditMode"]')
+            .should('be.visible')
+            .and('have.text','Gravar')
+            .click()
+
+        cy.get('#compileButtonId > .btn')
+            .should('be.visible')
+            .and('have.text', 'Gravar/Compilar')
+            .click()
+
+        cy.get('#ngdialog3-aria-describedby')
+            .should('be.visible')
+            .and('have.text', 'Conexão Cold compilada e salva com sucesso!')
+        
+        cy.get('.btn')
+            .should('be.visible')
+            .and('have.text', 'ok')
+            .click()
+
+        cy.get('.ndd-filter__searchbar__input')
+            .should('be.visible')
+            .and('be.empty')
+            .type('AUTOMACAO_COLD')
+
+        cy.get('.ndd-filter__searchbar__input-icon > .fa')
+            .should('be.visible')
+            .click()
+
+        
+     })
 })
