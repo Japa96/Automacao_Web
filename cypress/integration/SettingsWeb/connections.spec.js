@@ -499,7 +499,7 @@ describe('Settings Web - Connections', () => {
         fields[11] = "#statusVersion"
 
         var WSinformation = new Array();
-        WSinformation[0] = "https://homolog.sefaz.go.gov.br/nfe/services/NFeAutorizacao4?wsdl"
+        [WSinformation0] = "https://homolog.sefaz.go.gov.br/nfe/services/NFeAutorizacao4?wsdl"
         WSinformation[1] = "4.00"
         WSinformation[2] = "https://homolog.sefaz.go.gov.br/nfe/services/NFeRetAutorizacao4?wsdl"
         WSinformation[3] = "4.00"
@@ -735,7 +735,7 @@ describe('Settings Web - Connections', () => {
 
     })
 
-    it.only('Cold connection', () => {
+    it('Cold connection', () => {
 
         cy.xpath('/html/body/ui-view/layout/sidebar/aside/nav[1]/div/ul/li[1]/div/div/span')
             .should('have.text', 'Conexões')
